@@ -3,8 +3,11 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import SimpleLazyObject
 from model_utils.choices import Choices
 
-from cf_users.models import Profile
-
+PROFILE_TYPE_CHOICES = Choices(
+    ('REGULAR', "Пользователь системы"),
+    ('NCO', "Некомерческая организация"),
+    ('ORGANIZATION', "ООО/ОАО")
+)
 
 MODERATE_STATUS_CHOICES = Choices(
     (None, 'WAIT', "Ожидает проверки"),
@@ -63,13 +66,13 @@ class ProjectManager(ModerateManager):
 class PublishedProjectManager(models.Manager):
     def get_queryset(self):
         return ProjectQuerySet(self.model, using=self.db).allowed().filter(
-            owner__profile__base_type=Profile.TYPE_CHOICES.NCO)
+            owner__profile__base_type=PROFILE_TYPE_CHOICES.NCO)
 
 
 class WaitProjectManager(models.Manager):
     def get_queryset(self):
         return ProjectQuerySet(self.model, using=self.db).waiting().filter(
-            owner__profile__base_type=Profile.TYPE_CHOICES.NCO)
+            owner__profile__base_type=PROFILE_TYPE_CHOICES.NCO)
 
 
 class BannedProjectManager(models.Manager):
@@ -80,7 +83,7 @@ class BannedProjectManager(models.Manager):
 class DraftProjectManager(models.Manager):
     def get_queryset(self):
         return ProjectQuerySet(self.model, using=self.db).drafts().filter(
-            owner__profile__base_type=Profile.TYPE_CHOICES.NCO)
+            owner__profile__base_type=PROFILE_TYPE_CHOICES.NCO)
 
 
 class ProxyFileManager(ModerateManager):
