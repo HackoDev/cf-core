@@ -1,0 +1,4 @@
+include README.md
+recursive-include cf_core/fixtures *
+recursive-include cf_core/templates *
+recursive-include cf_core/static *
