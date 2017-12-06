@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def root(*dirs):
     """
-    Склейка пути относительно BASE_DIR.
+    Return joined paths relative from BASE_DIR.
     
     :param dirs:
     :return: 

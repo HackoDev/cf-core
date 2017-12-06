@@ -1,11 +1,12 @@
 Python3.5
 
-Базовый модуль проекта CrowdFunding.
+Application for CrowdFunding project. 
 
-1. базовая модель для наследования, используемая для модерации объектов
-2. базовая модель для сортировки списком объектов
-3. модули для статусов, контактов, партнеров, и слайдера
-4. rest-api в рамках модуля: справочники и записи модерации
+#### Run tests:
+    make tests
 
-Не является конечной реализацией, разработан в рамках примера кода и 
-возможного дальнейшего развития пакеты.
+1. base abstract helper models
+2. abstract moderation models
+3. rest-api
+
+It's not finally code version, would be used as code example.

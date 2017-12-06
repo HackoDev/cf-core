@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from easy_thumbnails.fields import ThumbnailerField
 from model_utils import Choices
 
@@ -20,15 +21,19 @@ class SocialLink(PositionModel):
         ('instagram', "Instagram")
     )
 
-    name = models.CharField("название", max_length=512, choices=SOCIAL_CHOICES,
-                            default='')
-    url = models.URLField("url", default='')
-    icon = ThumbnailerField("иконка", upload_to='icons/social/')
+    name = models.CharField(
+        verbose_name=_('name'),
+        max_length=512,
+        choices=SOCIAL_CHOICES,
+        default=''
+    )
+    url = models.URLField(verbose_name=_('url'), default='')
+    icon = ThumbnailerField(verbose_name=_('icon'), upload_to='icons/social/')
 
     def __str__(self):
         return self.get_name_display()
 
     class Meta:
         ordering = ('position',)
-        verbose_name = "ссылка на соц. сеть"
-        verbose_name_plural = "ссылки на соц. сети"
+        verbose_name = _('social link')
+        verbose_name_plural = _('social links')

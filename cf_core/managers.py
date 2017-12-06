@@ -1,18 +1,19 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import SimpleLazyObject
+from django.utils.translation import ugettext_lazy as _
 from model_utils.choices import Choices
 
 PROFILE_TYPE_CHOICES = Choices(
-    ('REGULAR', "Пользователь системы"),
-    ('NCO', "Некомерческая организация"),
-    ('ORGANIZATION', "ООО/ОАО")
+    ('REGULAR', _('regular')),
+    ('NCO', _('non commerce organization')),
+    ('ORGANIZATION', _('LLO/OSC'))
 )
 
 MODERATE_STATUS_CHOICES = Choices(
-    (None, 'WAIT', "Ожидает проверки"),
-    (True, 'ALLOWED', "Разрешено"),
-    (False, 'BANNED', "Отклонено"),
+    (None, 'WAIT', _('wait')),
+    (True, 'ALLOWED', _('allowed')),
+    (False, 'BANNED', _('banned')),
 )
 
 
@@ -89,8 +90,7 @@ class DraftProjectManager(models.Manager):
 class ProxyFileManager(ModerateManager):
     def __init__(self, *args, **kwargs):
         """
-        ModelManager для выборки файлов связанных с конкретной сущностью.
-        Будет использоваться при наследовании базовой модели файла.
+        Would be used for gets files which related with instance.
         """
 
         super(ProxyFileManager, self).__init__(*args, **kwargs)
@@ -100,7 +100,7 @@ class ProxyFileManager(ModerateManager):
 
     def get_queryset(self):
         """
-        Фильтрация записей на основе ContentType связанной модели. 
+        Return filtered objects by content_type id
         """
         return super(ProxyFileManager, self).get_queryset().filter(
             content_type__id=self.content_type.id

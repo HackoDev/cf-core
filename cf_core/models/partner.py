@@ -1,8 +1,9 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from model_utils import Choices
 
-from .. import managers
-from .abstract import PositionModel
+from cf_core import managers
+from cf_core.models.abstract import PositionModel
 
 __all__ = [
     'Partner',
@@ -15,19 +16,19 @@ class Partner(PositionModel):
     BASE_TYPE = None
 
     TYPE_CHOICES = Choices(
-        ('regular', 'REGULAR', "обычный"),
-        ('info', 'INFO', "информационный")
+        ('regular', 'REGULAR', _('regular')),
+        ('info', 'INFO', _('info'))
     )
 
     base_type = models.CharField(
-        "тип партнера",
+        verbose_name=_('type'),
         max_length=16,
         choices=TYPE_CHOICES,
         default=TYPE_CHOICES.REGULAR
     )
 
-    name = models.CharField("название", max_length=128, default='')
-    icon = models.ImageField("иконка", upload_to='partners/')
+    name = models.CharField(verbose_name=_('name'), max_length=128, default='')
+    icon = models.ImageField(verbose_name=_('icon'), upload_to='partners/')
 
     objects = managers.PartnerManager()
 
@@ -36,8 +37,8 @@ class Partner(PositionModel):
 
     class Meta:
         ordering = ('position',)
-        verbose_name = "партнер"
-        verbose_name_plural = "партнеры"
+        verbose_name = _('partner')
+        verbose_name_plural = _('partners')
 
     def save(self, *args, **kwargs):
         self.base_type = self.BASE_TYPE

@@ -16,7 +16,6 @@ class BaseModerationModelAdmin(admin.ModelAdmin):
             get_readonly_fields(request, obj=obj)
         return readonly_fiels + ('is_available', 'approved_by', 'approved_at')
 
-
     def save_formset(self, request, form, formset, change):
         for form in formset:
             if isinstance(form.instance, ModerationNote):

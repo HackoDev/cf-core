@@ -5,22 +5,22 @@ from easy_thumbnails.files import get_thumbnailer
 
 def generate_random_str(length=10):
     """
-    Генерация случайной строки заданной длины, по умолчанию 10.
-    
-    :param length: int Длина генерируемой строка
-    :return: 
+    Return random generated string with optional length.
+
+    :param length: int Str length
+    :return:
     """
     return os.urandom(length).hex()[:length]
 
 
 def uuid_replacer_handler(instance, filename, path=''):
     """
-    Замена имени файла на uuid
+    Replace filename to uuid str.
 
     :param instance: models.Model subclass
-    :param filename: str Имя фалй
-    :param path: str Путь для сохранения
-    :return: str Результирующий путь к файлу
+    :param filename: str File name
+    :param path: str File path
+    :return: str Result file path
     """
 
     ext = filename.split('.')[-1]
@@ -34,11 +34,12 @@ def uuid_replacer_handler(instance, filename, path=''):
 
 def upload_path_handler(instance, filename):
     """
-    Загрузка файла в указанную папку с заменой имени на uuid
+    Replace filename for uuid str.
+    Would be used for `upload_to` FileField attribute.
 
-    :param instance: object
-    :param filename: str Оригинальное имя файла
-    :return: str Новый путь файла
+    :param instance: model instance
+    :param filename: str Origin filename
+    :return: str Result filename
     """
 
     path = instance.FILE_PATH
@@ -47,13 +48,13 @@ def upload_path_handler(instance, filename):
 
 def get_thumbnail(image_field, width, height, crop=False):
     """
-    Обрезание изображения используя минимальную границу. Пример: (300x200) => 150x100
-    
+    Return thumbnail image using minimal size: 300x200 => 150x100
+
     :param image_field: ImageField
-    :param width: int Требуемая ширина
-    :param height: int Требуемая высоты
-    :param crop: crop, default - False
-    :return: str
+    :param width: int Width result image
+    :param height: int Height result image
+    :param crop: crop image
+    :return: str Result url path
     """
 
     if image_field.width > image_field.height:
@@ -63,3 +64,13 @@ def get_thumbnail(image_field, width, height, crop=False):
 
     options = {'size': size, 'crop': crop, 'upscale': True}
     return get_thumbnailer(image_field).get_thumbnail(options).url
+
+
+def format_number(number):
+    """
+    Return formatted number string.
+
+    :param number: number
+    :return: str
+    """
+    return '{:,}'.format(number).replace(',', ' ')

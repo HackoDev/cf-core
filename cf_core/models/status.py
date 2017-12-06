@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 from .abstract import PositionModel
 
@@ -10,15 +11,12 @@ __all__ = [
 
 
 class Status(PositionModel):
-    """
-    Модель статуса, используется для статусов различных сущностей.
-    """
 
-    name = models.CharField("Статус", max_length=512, default='')
+    name = models.CharField(verbose_name=_('name'), max_length=512, default='')
 
     content_type = models.ForeignKey(
         "contenttypes.ContentType",
-        verbose_name='тип объекта',
+        verbose_name=_('content type'),
         related_name='+'
     )
 
@@ -34,5 +32,5 @@ class Status(PositionModel):
     class Meta:
         unique_together = (('name', 'content_type'),)
         ordering = ('position',)
-        verbose_name = "статус"
-        verbose_name_plural = "статус"
+        verbose_name = _('status')
+        verbose_name_plural = _('statuses')

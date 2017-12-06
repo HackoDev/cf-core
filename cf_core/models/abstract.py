@@ -4,9 +4,10 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 from model_utils import Choices
 
-from .. import managers
+from cf_core import managers
 
 __all__ = [
     'PositionModel',
@@ -18,13 +19,13 @@ logger = logging.getLogger(__name__)
 
 class PositionModel(models.Model):
     """
-    Базовая модель, используемая для позиционируемых сущностей.
+    Abstract model, would be used for positional models.
     """
 
     position = models.PositiveIntegerField(
-        "позиция",
+        verbose_name=_('position'),
         default=0,
-        help_text="используется для сортировки"
+        help_text=_('would be used for ordering')
     )
 
     class Meta:
@@ -34,29 +35,33 @@ class PositionModel(models.Model):
 
 class BaseModerateModel(models.Model):
     """
-    Базовая модель используемая для сущностей, которым требуется модерация.
+    Abstract model for moderating models.
     """
 
     MODERATE_STATUS_CHOICES = managers.MODERATE_STATUS_CHOICES
 
     MODERATE_PROCESS_TYPES = Choices(
-        ('', 'DONE', "Ожидание"),
-        ('CHECK', "Отправлен на проверку"),
-        ('APPLY', "Применяется")
+        ('', 'DONE', _('wait')),
+        ('CHECK', _('checking')),
+        ('APPLY', _('applying'))
     )
 
     is_available = models.NullBooleanField(
-        "статус модерации",
+        verbose_name=_('moderation status'),
         default=MODERATE_STATUS_CHOICES.WAIT,
         choices=MODERATE_STATUS_CHOICES
     )
 
-    approved_at = models.DateTimeField("дата модерации", default=None,
-                                       blank=True, null=True)
+    approved_at = models.DateTimeField(
+        verbose_name=_('approved at'),
+        default=None,
+        blank=True,
+        null=True
+    )
 
     approved_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name="модератор",
+        verbose_name=_('approved by'),
         related_name='%(class)ss_granted_list',
         default=None,
         blank=True,
@@ -64,7 +69,7 @@ class BaseModerateModel(models.Model):
     )
 
     process_status = models.CharField(
-        "статус обработки модерации",
+        verbose_name=_('moderation status'),
         default=MODERATE_PROCESS_TYPES.DONE,
         choices=MODERATE_PROCESS_TYPES,
         max_length=8,
@@ -77,13 +82,11 @@ class BaseModerateModel(models.Model):
 
     def process_moderate(self, moderation_note, commit=True):
         """
-        Модерация объекта.Заложена возможность расширять данный метод, 
-        переопределив его у наследников.
+        Moderation object. Would be used for extending current method.
         
         :param moderation_note: core.ModerationNote instance
-        :param commit: bool Используется при необходимости 
-        сохранить объект в БД.
-        :return: 
+        :param commit: bool Save object into database
+        :return:
         """
 
         if self.process_status != self.MODERATE_PROCESS_TYPES.APPLY:

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
 
 from .abstract import PositionModel
@@ -12,18 +13,18 @@ class ServiceRule(PositionModel, TimeStampedModel):
 
     parent = models.ForeignKey(
         'self',
-        verbose_name="родитель",
+        verbose_name=_('parent'),
         related_name='child_rules',
         blank=True,
         null=True
     )
 
-    text = models.CharField("текст", max_length=128, default='')
+    text = models.CharField(_('text'), max_length=128, default='')
 
     def __str__(self):
         return self.text
 
     class Meta:
         ordering = ('position',)
-        verbose_name = "правило сервиса"
-        verbose_name_plural = "правила сервиса"
+        verbose_name = _('service rule')
+        verbose_name_plural = _('service rules')

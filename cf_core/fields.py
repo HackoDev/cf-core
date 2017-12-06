@@ -1,14 +1,17 @@
 from django import forms
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from easy_thumbnails.fields import ThumbnailerImageField
 
 
 class RestrictedFileField(models.FileField):
+    """
+    Restricted content types for file field.
+    """
 
     errors = {
-        'max_size': "Превышен размер файла, "
-                    "максимальный размер для загрузки: %s",
-        'invalid_ext': 'Неразрешенный тип файла, список доступных типов: %s'
+        'max_size': _('Max file size has reached: %s'),
+        'invalid_ext': _('Wrong type, we can use available only types: %s')
     }
 
     def __init__(self, verbose_name=None, name=None, content_types=None,

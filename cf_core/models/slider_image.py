@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from easy_thumbnails.fields import ThumbnailerImageField
 from model_utils.models import TimeStampedModel
 
@@ -11,14 +12,14 @@ __all__ = [
 
 class SliderImage(PositionModel, TimeStampedModel):
     """
-    Хранение изображений для слайдера отображаемого на главной странице.
+    Slider images on index page
     """
 
-    image = ThumbnailerImageField("изображение", upload_to='sliders/')
-    width = models.PositiveIntegerField("ширина", default=0,
-                                        help_text="При 0 не обрезается")
-    height = models.PositiveIntegerField("высота", default=0,
-                                         help_text="При 0 не обрезается")
+    image = ThumbnailerImageField(verbose_name=_('image'), upload_to='sliders/')
+    width = models.PositiveIntegerField(verbose_name=_('width'), default=0,
+                                        help_text=_('on 0 does not crop'))
+    height = models.PositiveIntegerField(verbose_name=_('height'), default=0,
+                                         help_text=_('on 0 does not crop'))
     crop = models.BooleanField("использовать crop", default=False)
 
     def __str__(self):
@@ -26,5 +27,5 @@ class SliderImage(PositionModel, TimeStampedModel):
 
     class Meta:
         ordering = ('position',)
-        verbose_name = "изображение для слайдера"
-        verbose_name_plural = "изображения для слайдера"
+        verbose_name = _('slider image')
+        verbose_name_plural = _('slider images')

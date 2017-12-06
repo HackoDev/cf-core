@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 from cf_core.router import router
-from cf_core.api import DictionaryViewSet
+from cf_core.api.views import DictionaryViewSet
 
 router.register('dictionaries', DictionaryViewSet, base_name='dictionaries')
 
